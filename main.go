@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-var address = "localhost:8001"
+var address = ":8001"
 
 type route struct {
 	get    map[string]func(ctx *fasthttp.RequestCtx)
