@@ -3,7 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/valyala/fasthttp"
+	"golang/entitys"
 	"golang/helper"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"log"
 	"os"
 	"regexp"
@@ -30,7 +33,13 @@ var router = route{
 
 func main() {
 	//handle route function
-	handleroute()
+	dsn := "root:1@tcp(127.0.0.1:3306)/web_golang?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	db.AutoMigrate(entitys.Register...)
+	//handleroute()
 	handle := func(ctx *fasthttp.RequestCtx) {
 		path := string(ctx.Path())
 		switch string(ctx.Method()) {
