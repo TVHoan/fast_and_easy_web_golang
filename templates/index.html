@@ -6,53 +6,14 @@
     <link rel="stylesheet" type="text/css" href="/templates/style.css">
     <style>
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-        }
-
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-        }
-
-        nav li {
-            display: inline-block;
-            margin: 10px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #333;
-            padding: 5px;
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
 
 
     </style>
 </head>
 <body>
 <header>
-    <h1>{{name}} - Giới thiệu lập trình viên {{age}}</h1>
+    <h1> Trần Vũ Hoàn - Giới thiệu lập trình viên </h1>
+    <h2 id="userinfo"></h2>
 </header>
 
 <nav>
@@ -82,5 +43,8 @@
 <footer>
     <p>© 2023 GPTGO. All rights reserved.</p>
 </footer>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://releases.jquery.com/git/jquery-git.min.js"></script>
+<script src="/templates/index.js"></script>
 </body>
 </html>

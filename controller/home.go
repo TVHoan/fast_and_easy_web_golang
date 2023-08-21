@@ -1,20 +1,23 @@
 package controller
 
 import (
+	"encoding/json"
 	"github.com/valyala/fasthttp"
 	"golang/render"
 )
 
 func HomeIndex(ctx *fasthttp.RequestCtx) {
-	//array := make(map[string]string)
-	//array["name"] = "hoan"
-	//array["age"] = "27"
-	//array["born"] = "Hai Phong"
-	//result, oke := json.Marshal(array)
-	//if oke == nil {
-	ctx.SetContentType("text/html; charset=utf-8")
 	render.Html("templates/index.html", nil, ctx)
-	//}
-	// Write the HTML content to the response
-
+}
+func UserInfo(ctx *fasthttp.RequestCtx) {
+	user := make(map[string]string)
+	user["username"] = "admin"
+	user["lang"] = "vi"
+	user["name"] = "Trần Vũ Hoàn"
+	user["title"] = "Trang chủ"
+	if reponse, err := json.Marshal(user); err != nil {
+		ctx.SetBody(reponse)
+	} else {
+		ctx.SetBody(reponse)
+	}
 }

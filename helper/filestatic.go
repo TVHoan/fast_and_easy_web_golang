@@ -2,11 +2,11 @@ package helper
 
 type Type string
 
-const (
-	javascript Type = ".js"
-	css        Type = ".css"
-	scss       Type = ".scss"
-)
+var Typefile = map[string]string{
+	".js":   "text/javascript; charset=utf-8",
+	".css":  "text/css; charset=utf-8",
+	".scss": "text/scss; charset=utf-8",
+}
 
 var Acept = []string{
 	".js",

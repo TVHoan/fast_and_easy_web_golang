@@ -35,13 +35,14 @@ func main() {
 		path := string(ctx.Path())
 		switch string(ctx.Method()) {
 		case "GET":
-			LoadStaticfile(ctx)
+
 			method, ok := router.get[path]
 			if ok {
 				method(ctx)
 			} else {
-				fmt.Println("method not found")
-				ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
+				LoadStaticfile(ctx)
+				//fmt.Println("method not found")
+				//ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
 			}
 		case "POST":
 			method, ok := router.get[path]
@@ -103,15 +104,14 @@ func LoadStaticfile(ctx *fasthttp.RequestCtx) {
 
 		regex := value + `$`
 		path := string(ctx.Path())
-		data, err := os.ReadFile("templates/style.css")
+		data, err := os.ReadFile(strings.TrimLeft(path, "/"))
 		if err != nil {
 			log.Printf("Error reading file: %s", err)
 			return
 		}
 		if m, _ := regexp.MatchString(regex, path); m {
-			ctx.SetContentType("text/css")
-			ctx.SendFile("templates/style.css")
-			fmt.Fprint(ctx, data)
+			ctx.SetContentType(helper.Typefile[value])
+			ctx.SetBody(data)
 			return
 		}
 	}

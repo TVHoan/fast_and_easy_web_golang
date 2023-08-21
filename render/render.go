@@ -8,6 +8,7 @@ import (
 )
 
 func Html(path string, data interface{}, ctx *fasthttp.RequestCtx) {
+	ctx.SetContentType("text/html; charset=utf-8")
 	filehtml, err := ioutil.ReadFile(path)
 	regex := `{{\w+}}`
 	var re = regexp.MustCompile(regex)
