@@ -3,7 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/valyala/fasthttp"
+	"golang/database"
+	"golang/entity"
 	"golang/helper"
+	"golang/middleware"
 	"log"
 	"os"
 	"regexp"
@@ -29,64 +32,18 @@ var router = route{
 }
 
 func main() {
+	db := database.Db()
+	db.AutoMigrate(entity.RegisterEntity...)
 	//handle route function
 	handleroute()
 	handle := func(ctx *fasthttp.RequestCtx) {
-		path := string(ctx.Path())
-		switch string(ctx.Method()) {
-		case "GET":
-
-			method, ok := router.get[path]
-			if ok {
-				method(ctx)
-			} else {
-				LoadStaticfile(ctx)
-				//fmt.Println("method not found")
-				//ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
-			}
-		case "POST":
-			method, ok := router.get[path]
-			if ok {
-				method(ctx)
-			} else {
-				fmt.Println("method not found")
-				ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
-			}
-		case "DELETE":
-			method, ok := router.delete[path]
-			if ok {
-				method(ctx)
-			} else {
-				fmt.Println("method not found")
-				ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
-			}
-		case "PUT":
-			method, ok := router.put[path]
-			if ok {
-				method(ctx)
-			} else {
-				fmt.Println("method not found")
-				ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
-			}
-		case "PATCH":
-			method, ok := router.patch[path]
-			if ok {
-				method(ctx)
-			} else {
-				fmt.Println("method not found")
-				ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
-			}
-		}
-
-		//switch string(ctx.Path()) {
-		//case "/foo":
-		//	fooHandlerFunc(ctx)
-		//default:
-		//	ctx.Error("not found", fasthttp.StatusNotFound)
-		//}
+		Routing(ctx)
 	}
+	//define generic middleware
+	middleware := middleware.GenericMiddleWare(handle)
+
 	fmt.Println("Server Run in " + address)
-	fasthttp.ListenAndServe(address, handle)
+	fasthttp.ListenAndServe(address, middleware)
 }
 func IsPathRoute(path string) bool {
 	if strings.Index(path, "/") == 0 {
@@ -115,4 +72,60 @@ func LoadStaticfile(ctx *fasthttp.RequestCtx) {
 			return
 		}
 	}
+}
+func Routing(ctx *fasthttp.RequestCtx) {
+	path := string(ctx.Path())
+	switch string(ctx.Method()) {
+	case "GET":
+
+		method := router.get[path]
+		if method != nil {
+			method(ctx)
+		} else {
+			LoadStaticfile(ctx)
+			//fmt.Println("method not found")
+			//ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
+		}
+	case "POST":
+		method := router.post[path]
+		if method != nil {
+			method(ctx)
+		} else {
+			fmt.Println("method not found")
+			ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
+		}
+	case "DELETE":
+		method := router.delete[path]
+		if method != nil {
+			method(ctx)
+		} else {
+			fmt.Println("method not found")
+			ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
+		}
+	case "PUT":
+		method := router.put[path]
+		if method != nil {
+			method(ctx)
+		} else {
+			fmt.Println("method not found")
+			ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
+		}
+	case "PATCH":
+		method := router.patch[path]
+		if method != nil {
+			method(ctx)
+		} else {
+			fmt.Println("method not found")
+			ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
+		}
+	}
+}
+func init() {
+	fmt.Println(`    
+	  _____      ______
+	 / ___/     //    \\
+	/ / ____    ||    ||
+	| | |_ |    ||    ||
+	| |__| |    | \__/ |   
+	\______/     \____/  `)
 }

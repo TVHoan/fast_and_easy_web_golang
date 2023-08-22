@@ -10,6 +10,8 @@ func handleroute() {
 	router.get["/a"] = handleA
 	router.get["/"] = controller.HomeIndex
 	router.get["/api/userinfor"] = controller.UserInfo
+	router.post["/api/register"] = controller.Register
+	router.post["/api/login"] = controller.Login
 }
 func handleA(ctx *fasthttp.RequestCtx) {
 	array := make(map[string]string)
