@@ -3,8 +3,13 @@ package controller
 import (
 	"encoding/json"
 	"github.com/valyala/fasthttp"
+
 	"golang/render"
 )
+
+type App struct {
+	*fasthttp.RequestCtx
+}
 
 func HomeIndex(ctx *fasthttp.RequestCtx) {
 	render.Html("templates/index.html", nil, ctx)
