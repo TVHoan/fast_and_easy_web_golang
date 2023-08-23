@@ -32,6 +32,7 @@ var router = route{
 }
 
 func main() {
+
 	//handle route function
 	dsn := "root:1@tcp(127.0.0.1:3306)/web_golang?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -39,7 +40,7 @@ func main() {
 		panic("failed to connect database")
 	}
 	db.AutoMigrate(entitys.Register...)
-	//handleroute()
+	HandleRoute()
 	handle := func(ctx *fasthttp.RequestCtx) {
 		path := string(ctx.Path())
 		switch string(ctx.Method()) {

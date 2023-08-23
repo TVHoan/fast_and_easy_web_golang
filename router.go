@@ -6,7 +6,7 @@ import (
 	"golang/controller"
 )
 
-func handleroute() {
+func HandleRoute() {
 	router.get["/a"] = handleA
 	router.get["/"] = controller.HomeIndex
 	router.get["/api/userinfor"] = controller.UserInfo
