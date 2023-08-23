@@ -14,11 +14,11 @@ type App struct {
 func HomeIndex(ctx *fasthttp.RequestCtx) {
 	render.Html("templates/index.html", nil, ctx)
 }
+
 func UserInfo(ctx *fasthttp.RequestCtx) {
 	user := make(map[string]string)
-	user["username"] = "admin"
+	user["username"] = ctx.UserValue("username").(string)
 	user["lang"] = "vi"
-	user["name"] = "Trần Vũ Hoàn"
 	user["title"] = "Trang chủ"
 	if reponse, err := json.Marshal(user); err != nil {
 		ctx.SetBody(reponse)
